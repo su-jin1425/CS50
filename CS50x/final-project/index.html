@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Feedback Form</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="https://smtpjs.com/v3/smtp.js"></script>
+</head>
+<body>
+
+<div class="wrapper">
+  <div class="title">Feedback Form</div>
+  <div class="form">
+    <div class="inputfield">
+      <label for="txtfname">First Name</label>
+      <input type="text" id="txtfname" class="input" required>
+    </div>  
+    <div class="inputfield">
+      <label for="txtlname">Last Name</label>
+      <input type="text" id="txtlname" class="input" required>
+    </div> 
+    <div class="inputfield">
+      <label for="sel">Gender</label>
+      <div class="custom_select">
+        <select id="sel" required>
+          <option value="">Select</option>
+          <option value="male">Male</option>
+          <option value="female">Female</option>
+        </select>
+      </div>
+    </div> 
+    <div class="inputfield">
+      <label for="mail">Email Address</label>
+      <input type="email" id="mail" class="input" required>
+    </div> 
+    <div class="inputfield">
+      <label for="phone">Phone Number</label>
+      <input type="tel" id="phone" class="input" required pattern="[0-9]{10}">
+    </div> 
+    <div class="inputfield">
+      <label for="add">Address</label>
+      <textarea id="add" class="textarea" required></textarea>
+    </div> 
+    <div class="inputfield">
+      <label>Rating</label>
+      <div class="rating" role="radiogroup">
+        <span class="star" data-value="5" role="radio" aria-checked="false">★</span>
+        <span class="star" data-value="4" role="radio" aria-checked="false">★</span>
+        <span class="star" data-value="3" role="radio" aria-checked="false">★</span>
+        <span class="star" data-value="2" role="radio" aria-checked="false">★</span>
+        <span class="star" data-value="1" role="radio" aria-checked="false">★</span>
+        <input type="hidden" id="rating" name="rating" required>
+      </div>
+    </div>
+    <div class="inputfield">
+      <label for="feed">Feedback</label>
+      <textarea id="feed" class="textarea" required></textarea>
+    </div>  
+    <div class="inputfield terms">
+      <label class="check">
+        <input type="checkbox" id="ck" required>
+        <span class="checkmark"></span>
+      </label>
+      <p>Agreed to terms and conditions</p>
+    </div> 
+    <div class="inputfield">
+      <input type="submit" value="Register" id="bton" class="btn" onclick="sendEmail()">
+    </div>
+  </div>
+</div>  
+<script> // for Rating 
+  document.addEventListener('DOMContentLoaded', () => {
+    const stars = document.querySelectorAll('.star');
+    const ratingInput = document.getElementById('rating');
+
+    stars.forEach(star => {
+      star.addEventListener('click', () => {
+        const value = star.getAttribute('data-value');
+        ratingInput.value = value;
+        stars.forEach(s => s.classList.remove('selected'));
+        for (let i = 0; i < value; i++) {
+          stars[i].classList.add('selected');
+        }
+      });
+
+      star.addEventListener('mouseover', () => {
+        const value = star.getAttribute('data-value');
+        stars.forEach(s => s.classList.remove('hover'));
+        for (let i = 0; i < value; i++) {
+          stars[i].classList.add('hover');
+        }
+      });
+
+      star.addEventListener('mouseout', () => {
+        stars.forEach(s => s.classList.remove('hover'));
+      });
+    });
+  });
+</script>
+<script>
+var fname=document.getElementById('txtfname').value;
+var lname=document.getElementById('txtlname').value;
+var gsel=document.getElementById('sel').value;
+var email=document.getElementById('mail').value;
+var ph=document.getElementById('phone').value;
+var addre=document.getElementById('add').value;
+var rat=document.getElementById('rating').value;
+var fead=document.getElementById('feed').value;
+
+var body="<table border = '5'><tr><td>First Name</td><td>"+fname+" </td></tr><tr><td>Last Name</td><td>"+lname+"</td></tr><tr><td>Gender</td><td>"+gsel+"</td></tr><tr><td>E-mail</td><td>"+email+"</td></tr><tr><td>Phone Number</td><td>"+ph+"</td></tr><tr><td>Address</td><td>"+addre+"</td></tr><tr><td>Rating</td><td>"+rat+"</td></tr><tr><td>Feedback</td><td>"+fead+"</td></tr></table>";
+
+Email.send({
+    Host : "smtp.elasticemail.com",
+    Username : "samplecs50@gmail.com", // Create a less secure account
+    Password : "Password of sample CS50",
+    To : 'shoot.the.breeze14@gmail.com', // gmail which receives feedback
+    From : "samplecs50@gmail.com",
+    Subject : "Message from Feedback Form",
+    Body : body
+}).then(
+  message => alert(message)
+);
+</script>
+
+</body>
+</html>
